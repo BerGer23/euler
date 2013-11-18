@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem17();
+		problem18();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -461,8 +461,6 @@ public class Main {
 					lettercount += getDigitLetters(tmp) + 7;
 				} else {
 
-					// System.out.println(i + ":" + tmp + "=" + (i - tmp *
-					// 100));
 					lettercount += getDigitLetters(tmp) + 10
 							+ getDigitLetters(i - (tmp * 100));
 				}
@@ -472,8 +470,6 @@ public class Main {
 				System.out.println("FEHLER");
 				System.exit(1);
 			}
-			System.out.println(i + ": lettercount: " + lettercount + ", +"
-					+ (lettercount - lastlettercount));
 
 		}
 
@@ -484,7 +480,7 @@ public class Main {
 
 		int res = 0;
 
-		if (input >= 90) { // ninety X
+		if (input >= 90) {
 			res = 6 + getDigitLetters(input - 90);
 		} else if (input >= 80) {
 			res = 6 + getDigitLetters(input - 80);
@@ -540,7 +536,34 @@ public class Main {
 			}
 		}
 
-		// System.out.println("called for " + input + ", returned " + res);
 		return res;
+	}
+
+	private static void problem18() throws FileNotFoundException {
+
+		System.out.println("Triangle Shiat");
+
+		Vector<Vector<Integer>> vTriangleLines = new Vector<Vector<Integer>>();
+		for (int i = 0; i < 15; i++)
+			vTriangleLines.add(new Vector<Integer>());
+
+		Vector<String> lines = parseFile("problem18.txt");
+
+		if (lines.size() != vTriangleLines.size()) {
+			System.out.println("Unterschiedlich groﬂ " + lines.size() + ", "
+					+ vTriangleLines.size());
+			System.exit(1);
+		} else {
+			System.out.println("Parsing..");
+			for (int i = 0; i < 15; i++) {
+				String[] line = lines.get(i).split(" ");
+				for (String str : line) {
+					vTriangleLines.get(i).add(Integer.valueOf(str));
+					System.out.print(str + " ");
+				}
+				System.out.println();
+			}
+		}
+
 	}
 }
