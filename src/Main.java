@@ -448,57 +448,92 @@ public class Main {
 		System.out.println("letter count");
 
 		long lettercount = 0;
-		for (int i = 1; i <= 1000; i++) {
+		long lastlettercount = 0;
+		int tmp = 0;
+		for (int i = 1; i <= 85; i++) {
+			lastlettercount = lettercount;
 			if (i > 999) {
-				lettercount += 11; // hart kodierter fall für 1000
+				lettercount += 11; // hart kodierter fall für onethousand
 			} else if (i > 99) {
-				lettercount += 10; // hier brauchen wir ein 'hundred and'
-			} else if (i > 10) {
-
+				tmp = i / 100; // zum hunderter kürzen
+				// System.out.println(i + ":" + tmp + "=" + (i - tmp * 100));
+				lettercount += getDigitLetters(tmp) + 10
+						+ getDigitLetters(i - (tmp * 100));
 			} else if (i > 0) {
-				lettercount += getOneDigitPlusTenLetters(i);
+				lettercount += getDigitLetters(i);
 			} else {
 				System.out.println("FEHLER");
 				System.exit(1);
 			}
+			System.out.println(i + ": lettercount: " + lettercount + ", +"
+					+ (lettercount - lastlettercount));
+
 		}
 
 		System.out.println("Count: " + lettercount);
 	}
 
-	private static int getTwoDigitLetters(int input) {
+	private static int getDigitLetters(int input) {
+
+		int res = 0;
 
 		if (input >= 90) { // ninety X
-			return (4 + getOneDigitPlusTenLetters(input - 90));
+			res = 6 + getDigitLetters(input - 90);
+		} else if (input >= 80) {
+			res = 6 + getDigitLetters(input - 80);
+		} else if (input >= 70) {
+			res = 7 + getDigitLetters(input - 70);
+		} else if (input >= 60) {
+			res = 5 + getDigitLetters(input - 60);
+		} else if (input >= 50) {
+			res = 5 + getDigitLetters(input - 50);
+		} else if (input >= 40) {
+			res = 5 + getDigitLetters(input - 40);
+		} else if (input >= 30) {
+			res = 6 + getDigitLetters(input - 30);
+		} else if (input >= 20) {
+			res = 6 + getDigitLetters(input - 20);
+		} else if (input >= 1) {
+
+			switch (input) {
+
+			case 1:
+			case 2:
+			case 6:
+			case 10:
+				res = 3;
+				break;
+			case 4:
+			case 5:
+			case 9:
+				res = 4;
+				break;
+			case 3:
+			case 7:
+			case 8:
+				res = 5;
+				break;
+			case 11:
+			case 12:
+				res = 6;
+				break;
+			case 15:
+			case 16:
+				res = 7;
+				break;
+			case 13:
+			case 14:
+			case 18:
+			case 19:
+				res = 8;
+				break;
+			case 17:
+				res = 9;
+				break;
+			}
 		}
 
-		System.out.println("something went wrong in gettwodigits");
-		return 0;
-	}
-
-	private static int getOneDigitPlusTenLetters(int input) {// processes
-																// numbers >0,
-																// <11
-		switch (input) {
-		case 1:
-		case 2:
-		case 6:
-		case 10:
-			return 3;
-
-		case 4:
-		case 5:
-		case 9:
-			return 4;
-
-		case 3:
-		case 7:
-		case 8:
-			return 5;
-
-		}
-
-		// System.out.println("something went wrong in getonedigit");
-		return 0;
+		// System.out.println("called for " + input + ", returned " + res);
+		return res;
 	}
 }
