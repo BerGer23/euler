@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem19();
+		problem20();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -641,5 +641,16 @@ public class Main {
 
 		System.out.println(counter);
 
+	}
+
+	private static void problem20() { // wir brauchen dicke ints alter
+		System.out.println("Problem 20: Fakultätssumme 100");
+		long lFak = 1;
+
+		for (int n = 2; n < 101; n++) {
+			System.out.println(lFak);
+			lFak *= n;
+		}
+		System.out.println(lFak);
 	}
 }
