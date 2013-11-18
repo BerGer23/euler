@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -8,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem3();
+		problem17();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -427,4 +428,77 @@ public class Main {
 
 	}
 
+	private static void problem16() {
+		System.out.println("Quersumme: 2^1000");
+		BigInteger biNumber = BigInteger.valueOf(2);
+		for (int i = 1; i < 1000; i++) {
+			biNumber = biNumber.multiply(BigInteger.valueOf(2));
+		}
+		String result = biNumber.toString();
+		long quersumme = 0;
+		for (int j = 0; j < result.length(); j++) {
+			quersumme += Long.valueOf(result.substring(j, j + 1));
+		}
+		System.out.println(result);
+		System.out.println(quersumme);
+	}
+
+	private static void problem17() {
+
+		System.out.println("letter count");
+
+		long lettercount = 0;
+		for (int i = 1; i <= 1000; i++) {
+			if (i > 999) {
+				lettercount += 11; // hart kodierter fall für 1000
+			} else if (i > 99) {
+				lettercount += 10; // hier brauchen wir ein 'hundred and'
+			} else if (i > 10) {
+
+			} else if (i > 0) {
+				lettercount += getOneDigitPlusTenLetters(i);
+			} else {
+				System.out.println("FEHLER");
+				System.exit(1);
+			}
+		}
+
+		System.out.println("Count: " + lettercount);
+	}
+
+	private static int getTwoDigitLetters(int input) {
+
+		if (input >= 90) { // ninety X
+			return (4 + getOneDigitPlusTenLetters(input - 90));
+		}
+
+		System.out.println("something went wrong in gettwodigits");
+		return 0;
+	}
+
+	private static int getOneDigitPlusTenLetters(int input) {// processes
+																// numbers >0,
+																// <11
+		switch (input) {
+		case 1:
+		case 2:
+		case 6:
+		case 10:
+			return 3;
+
+		case 4:
+		case 5:
+		case 9:
+			return 4;
+
+		case 3:
+		case 7:
+		case 8:
+			return 5;
+
+		}
+
+		// System.out.println("something went wrong in getonedigit");
+		return 0;
+	}
 }
