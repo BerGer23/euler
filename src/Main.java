@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem18();
+		problem19();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -544,10 +544,12 @@ public class Main {
 		System.out.println("Triangle Shiat");
 
 		Vector<Vector<Integer>> vTriangleLines = new Vector<Vector<Integer>>();
-		for (int i = 0; i < 15; i++)
-			vTriangleLines.add(new Vector<Integer>());
 
-		Vector<String> lines = parseFile("problem18.txt");
+		for (int i = 0; i < 100; i++) {
+			vTriangleLines.add(new Vector<Integer>());
+		}
+
+		Vector<String> lines = parseFile("triangle.txt");
 
 		if (lines.size() != vTriangleLines.size()) {
 			System.out.println("Unterschiedlich groﬂ " + lines.size() + ", "
@@ -555,15 +557,89 @@ public class Main {
 			System.exit(1);
 		} else {
 			System.out.println("Parsing..");
-			for (int i = 0; i < 15; i++) {
+			for (int i = 0; i < 100; i++) {
 				String[] line = lines.get(i).split(" ");
 				for (String str : line) {
 					vTriangleLines.get(i).add(Integer.valueOf(str));
 					System.out.print(str + " ");
 				}
 				System.out.println();
+
 			}
 		}
+
+		// build the paths
+		for (int i = vTriangleLines.size() - 2; i >= 0; i--) {
+			// System.out.println("i = " + i);
+			for (int j = 0; j < vTriangleLines.get(i).size(); j++) {
+				// System.out.println("j = " + j);
+
+				System.out.print("Aktueller Wert: "
+						+ vTriangleLines.get(i).get(j));
+
+				vTriangleLines.get(i).set(
+						j,
+						(vTriangleLines.get(i).get(j) + (Math.max(
+								vTriangleLines.get(i + 1).get(j),
+								vTriangleLines.get(i + 1).get(j + 1)))));
+				System.out.println(" Neuer Wert: "
+						+ vTriangleLines.get(i).get(j));
+
+			}
+			System.out.println(vTriangleLines.get(i).toString());
+		}
+
+	}
+
+	private static void problem19() {
+		System.out.println("Problem 19: Kalender");
+
+		int tag = 7; // erster sonntag
+		int monat = 1;
+		int jahr = 1900;
+		boolean leap = false;
+		Vector<Integer> dreissigermonate = new Vector<Integer>();
+		dreissigermonate.add(4);
+		dreissigermonate.add(6);
+		dreissigermonate.add(9);
+		dreissigermonate.add(11);
+
+		int counter = 0;
+		while (jahr < 2001) {
+			tag += 7; // n‰chster sonntag
+
+			if (tag > 28 && monat == 2 && !leap) // februar
+			{
+				monat = 3;
+				tag = tag % 28;
+			} else if (tag > 29 && monat == 2 && leap) {
+				monat = 3;
+				tag = tag % 29;
+				leap = false;
+			} else if (tag > 30 && dreissigermonate.contains(monat)) {
+				monat++;
+				tag = tag % 30;
+			} else if (tag > 31) {
+				if (monat == 12) {
+					monat = 1;
+					jahr++;
+					if (jahr % 4 == 0 && jahr % 100 != 0) {
+						leap = true;
+					}
+					if (jahr % 4 == 0 && jahr % 400 == 0) {
+						leap = true;
+					}
+				} else {
+					monat++;
+				}
+				tag = tag % 31;
+			}
+
+			if (tag == 1 && jahr > 1900)
+				counter++;
+		}
+
+		System.out.println(counter);
 
 	}
 }
