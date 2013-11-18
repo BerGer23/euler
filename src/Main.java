@@ -450,15 +450,22 @@ public class Main {
 		long lettercount = 0;
 		long lastlettercount = 0;
 		int tmp = 0;
-		for (int i = 1; i <= 85; i++) {
+		for (int i = 1; i <= 1000; i++) {
 			lastlettercount = lettercount;
 			if (i > 999) {
 				lettercount += 11; // hart kodierter fall für onethousand
 			} else if (i > 99) {
-				tmp = i / 100; // zum hunderter kürzen
-				// System.out.println(i + ":" + tmp + "=" + (i - tmp * 100));
-				lettercount += getDigitLetters(tmp) + 10
-						+ getDigitLetters(i - (tmp * 100));
+				tmp = i / 100;// zum hunderter kürzen
+
+				if (i % 100 == 0) {
+					lettercount += getDigitLetters(tmp) + 7;
+				} else {
+
+					// System.out.println(i + ":" + tmp + "=" + (i - tmp *
+					// 100));
+					lettercount += getDigitLetters(tmp) + 10
+							+ getDigitLetters(i - (tmp * 100));
+				}
 			} else if (i > 0) {
 				lettercount += getDigitLetters(i);
 			} else {
