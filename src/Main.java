@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -9,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem20();
+		problem24();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -544,12 +547,10 @@ public class Main {
 		System.out.println("Triangle Shiat");
 
 		Vector<Vector<Integer>> vTriangleLines = new Vector<Vector<Integer>>();
-
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 15; i++)
 			vTriangleLines.add(new Vector<Integer>());
-		}
 
-		Vector<String> lines = parseFile("triangle.txt");
+		Vector<String> lines = parseFile("problem18.txt");
 
 		if (lines.size() != vTriangleLines.size()) {
 			System.out.println("Unterschiedlich groﬂ " + lines.size() + ", "
@@ -557,100 +558,218 @@ public class Main {
 			System.exit(1);
 		} else {
 			System.out.println("Parsing..");
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 15; i++) {
 				String[] line = lines.get(i).split(" ");
 				for (String str : line) {
 					vTriangleLines.get(i).add(Integer.valueOf(str));
 					System.out.print(str + " ");
 				}
 				System.out.println();
-
 			}
-		}
-
-		// build the paths
-		for (int i = vTriangleLines.size() - 2; i >= 0; i--) {
-			// System.out.println("i = " + i);
-			for (int j = 0; j < vTriangleLines.get(i).size(); j++) {
-				// System.out.println("j = " + j);
-
-				System.out.print("Aktueller Wert: "
-						+ vTriangleLines.get(i).get(j));
-
-				vTriangleLines.get(i).set(
-						j,
-						(vTriangleLines.get(i).get(j) + (Math.max(
-								vTriangleLines.get(i + 1).get(j),
-								vTriangleLines.get(i + 1).get(j + 1)))));
-				System.out.println(" Neuer Wert: "
-						+ vTriangleLines.get(i).get(j));
-
-			}
-			System.out.println(vTriangleLines.get(i).toString());
 		}
 
 	}
 
-	private static void problem19() {
-		System.out.println("Problem 19: Kalender");
-
-		int tag = 7; // erster sonntag
-		int monat = 1;
-		int jahr = 1900;
-		boolean leap = false;
-		Vector<Integer> dreissigermonate = new Vector<Integer>();
-		dreissigermonate.add(4);
-		dreissigermonate.add(6);
-		dreissigermonate.add(9);
-		dreissigermonate.add(11);
-
-		int counter = 0;
-		while (jahr < 2001) {
-			tag += 7; // n‰chster sonntag
-
-			if (tag > 28 && monat == 2 && !leap) // februar
-			{
-				monat = 3;
-				tag = tag % 28;
-			} else if (tag > 29 && monat == 2 && leap) {
-				monat = 3;
-				tag = tag % 29;
-				leap = false;
-			} else if (tag > 30 && dreissigermonate.contains(monat)) {
-				monat++;
-				tag = tag % 30;
-			} else if (tag > 31) {
-				if (monat == 12) {
-					monat = 1;
-					jahr++;
-					if (jahr % 4 == 0 && jahr % 100 != 0) {
-						leap = true;
-					}
-					if (jahr % 4 == 0 && jahr % 400 == 0) {
-						leap = true;
-					}
-				} else {
-					monat++;
-				}
-				tag = tag % 31;
-			}
-
-			if (tag == 1 && jahr > 1900)
-				counter++;
+	private static void problem20() {
+		BigInteger biFAK = BigInteger.ONE;
+		for (int i = 2; i <= 100; i++) {
+			biFAK = biFAK.multiply(BigInteger.valueOf(i));
 		}
 
-		System.out.println(counter);
+		String result = biFAK.toString();
+		long quersumme = 0;
+		for (int j = 0; j < result.length(); j++) {
+			quersumme += Long.valueOf(result.substring(j, j + 1));
+		}
+		System.out.println("100!: " + biFAK);
+		System.out.println("Quersumme: " + quersumme);
+	}
+
+	private static void problem21() {
+		int[] dns = new int[10000];
+		long sum = 0;
+		for (int i = 1; i < 10000; i++) {
+			dns[i] = dns(i);
+			if ((dns[i] < i) && (dns[dns[i]] == i)) {
+				System.out.println("Admicable pair: " + i + ", " + dns[i]);
+				sum = sum + i + dns[i];
+			}
+		}
+
+		System.out.println(sum);
 
 	}
 
-	private static void problem20() { // wir brauchen dicke ints alter
-		System.out.println("Problem 20: Fakult‰tssumme 100");
-		long lFak = 1;
-
-		for (int n = 2; n < 101; n++) {
-			System.out.println(lFak);
-			lFak *= n;
+	private static int dns(int number) {
+		int sum = 1;
+		for (int i = 2; i <= number / 2; i++) {
+			if (number % i == 0)
+				sum += i;
 		}
-		System.out.println(lFak);
+		return sum;
+	}
+
+	private static void problem22() throws FileNotFoundException {
+		List<String> names = parseNames("names.txt");
+		System.out.println(names.size());
+		// for (String strName : names)
+		// System.out.println(strName);
+
+		// List<String> sortedNames = mergeSortNames(names);
+		Collections.sort(names, new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				return compareTwoNames(s1, s2);
+			}
+		});
+		// for (String strName : sortedNames)
+		// System.out.println(strName);
+		long sumold = 0;
+		long sumOfSortedNames = 0;
+		for (int i = 0; i < names.size(); i++) {
+			sumold = sumOfSortedNames;
+
+			sumOfSortedNames = sumOfSortedNames + valueOfName(names.get(i))
+					* (i + 1);
+
+		}
+
+		System.out.println("The sum of the sorted names is: "
+				+ sumOfSortedNames);
+
+		System.out.println(names.size());
+
+	}
+
+	private static List<String> parseNames(String filename)
+			throws FileNotFoundException {
+		File file = new File(filename);
+		Scanner input = new Scanner(file);
+		List<String> myNames = new Vector<String>();
+
+		while (input.hasNext()) {
+			// or to process line by line
+			String nextLine = input.nextLine();
+			nextLine = nextLine.replace("\"", "");
+			for (String strName : nextLine.split(",")) {
+				myNames.add(strName);
+			}
+
+		}
+
+		input.close();
+		return myNames;
+	}
+
+	// returns true if name1 <= name2
+	private static int compareTwoNames(String name1, String name2) {
+		int length = Math.min(name1.length(), name2.length());
+
+		for (int i = 0; i < length; i++) {
+			if (name1.charAt(i) < name2.charAt(i))
+				return 0;
+			else if (name1.charAt(i) > name2.charAt(i))
+				return 1;
+		}
+
+		if (name1.length() < name2.length())
+			return 0;
+		else if (name1.length() > name2.length())
+			return 1;
+
+		return 0;
+
+	}
+
+	private static int valueOfName(String name) {
+		int sum = 0;
+		name = name.toLowerCase();
+		for (int i = 0; i < name.length(); i++) {
+			sum = sum + (name.charAt(i) - 96);
+		}
+		return sum;
+	}
+
+	private static void problem23() {
+
+		List<Integer> abundantNumbers = new Vector<Integer>();
+		for (int i = 1; i <= 28123; i++) {
+			if (checkAbundant(i))
+				abundantNumbers.add(i);
+		}
+
+		System.out.println("Amount of ab Num:" + abundantNumbers.size());
+
+		List<Integer> sumsOfTwoAbNum = new Vector<Integer>();
+		for (int i = 0; i < abundantNumbers.size(); i++) { // jede summe bilden
+			for (int j = i; j < abundantNumbers.size(); j++) {
+				sumsOfTwoAbNum.add(abundantNumbers.get(i)
+						+ abundantNumbers.get(j));
+			}
+		}
+
+		System.out.println("Sums of two ab Num:" + sumsOfTwoAbNum.size());
+
+		BigInteger sumOfAllNonAbSums = BigInteger.ZERO;
+		for (int i = 1; i <= 28123; i++) {
+			if (!sumsOfTwoAbNum.contains(i))
+				sumOfAllNonAbSums = sumOfAllNonAbSums
+						.add(BigInteger.valueOf(i));
+		}
+
+		System.out.println("Sum of all non ab sums: " + sumOfAllNonAbSums);
+	}
+
+	private static boolean checkAbundant(int input) {
+		int sumdividers = 0;
+		for (int i = 1; i <= input / 2; i++) {
+			if (input % i == 0)
+				sumdividers += i;
+			if (sumdividers > input)
+				return true;
+		}
+		return false;
+	}
+
+	private static void problem24() {
+		int[] numbers = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		printXthPerm(numbers, 1000000);
+	}
+
+	private static void printXthPerm(int[] numbers, int rounds) {
+		for (int i = 1; i < rounds; i++) {
+			numbers = nextLecPerm(numbers);
+		}
+		for (int i = 0; i < 10; i++)
+			System.out.print(numbers[i]);
+		System.out.println();
+
+	}
+
+	private static int[] nextLecPerm(int[] a) {
+		int N = a.length;
+
+		// find rightmost element a[k] that is smaller than element to its right
+		int k;
+		for (k = N - 2; k >= 0; k--)
+			if (a[k] < a[k + 1])
+				break;
+
+		// find rightmost element a[j] that is larger than a[k]
+		int j = N - 1;
+		while (a[k] > a[j])
+			j--;
+		swap(a, j, k);
+
+		for (int r = N - 1, s = k + 1; r > s; r--, s++)
+			swap(a, r, s);
+
+		return a;
+
+	}
+
+	public static void swap(int[] a, int i, int j) {
+		int temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
 	}
 }
