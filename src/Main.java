@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem25();
+		problem26();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -789,5 +789,11 @@ public class Main {
 
 		System.out.println(counter);
 
+	}
+
+	private static void problem26() {
+		// mit modulo machen, 1000 / 1 bis 1000
+		// jeweilige teiler in vektor mit modulo weitermachen bis entweder 0
+		// oder zahl sich wiederholt
 	}
 }
