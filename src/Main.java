@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem20();
+		problem25();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -652,5 +652,22 @@ public class Main {
 			lFak *= n;
 		}
 		System.out.println(lFak);
+	}
+
+	private static void problem25() {
+		BigInteger biFib1 = BigInteger.ONE;
+		BigInteger biFib2 = BigInteger.ONE;
+		BigInteger biFibtmp;
+
+		int counter = 2;
+		while (biFib2.toString().length() < 1000) {
+			biFibtmp = biFib2;
+			biFib2 = biFib2.add(biFib1);
+			biFib1 = biFibtmp;
+			counter++;
+		}
+
+		System.out.println(counter);
+
 	}
 }
