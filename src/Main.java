@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem3();
+		problem30();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -957,7 +958,6 @@ public class Main {
 			}
 		}
 		System.out.println("sum: " + sum);
-
 		boolean debug = false;
 		if (debug) {
 			System.out.println();
@@ -971,5 +971,49 @@ public class Main {
 			}
 			System.out.println();
 		}
+	}
+
+	private static void problem29() {
+		System.out.println("Problem 29");
+		ArrayList<Double> myValues = new ArrayList<Double>();
+
+		for (int i = 2; i < 101; i++) {
+			for (int j = 2; j < 101; j++) {
+				Double tmp = Math.pow(i, j);
+				if (!myValues.contains(tmp)) {
+					myValues.add(tmp);
+					// System.out.println(tmp);
+				}
+			}
+		}
+
+		System.out.println(myValues.size());
+
+	}
+
+	private static void problem30() {
+		System.out.println("Problem 30");
+		long value = 11;
+		long sumOfThese = 0;
+		while (value < 354294)/* 6 * 9^5 */{
+			if (isFifthPowerNumber(value)) {
+				sumOfThese += value;
+				System.out.println(value + ": " + sumOfThese);
+			}
+			value++;
+		}
+	}
+
+	private static boolean isFifthPowerNumber(long input) {
+		String strInput = String.valueOf(input);
+		for (int i = 0; i < strInput.length(); i++) {
+			input -= Math.pow(Long.valueOf(strInput.substring(i, i + 1)), 5);
+			if (input < 0)
+				return false;
+		}
+		if (input == 0)
+			return true;
+		else
+			return false;
 	}
 }
