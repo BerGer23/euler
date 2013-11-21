@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem27();
+		problem3();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -69,10 +69,11 @@ public class Main {
 	}
 
 	private static boolean checkPrime(long l) {
-		if (l < 2)
+
+		if (l < 2 || l % 2 == 0)
 			return false;
 
-		for (long k = 2; k <= l / 2; k++) {
+		for (long k = 3; k <= l / 2; k = k + 2) {
 			if (l % k == 0)
 				return false;
 		}
@@ -855,12 +856,12 @@ public class Main {
 		int tmp;
 
 		List<Integer> myPrimeList = new Vector<Integer>();
-		for (int i = 3; i < 9999; i++) {
+		for (int i = 3; i < 999; i++) {
 			if (checkPrime(i))
 				myPrimeList.add(i);
 		}
 
-		for (int i = -9999; i < 10000; i++) {
+		for (int i = -999; i < 10000; i++) {
 			for (int j = 1; j < myPrimeList.size(); j++) {
 				tmp = getHowManyPrimes(i, myPrimeList.get(j));
 				if (tmp > maxprimeamount) {
@@ -884,5 +885,91 @@ public class Main {
 
 	private static int getTermResult(int number, int a, int b) {
 		return (int) (Math.pow(number, 2) + a * number + b);
+	}
+
+	private static void problem28() {
+		int size = 1001;
+		int[][] iSpiral = new int[size][size];
+
+		int stepstaken = 0;
+		int numelement = 1;
+
+		int x = size / 2;
+		int y = x;
+		int stepsize = 1;
+		int dir = 0; // 0 r 1 u 2 l 3 o
+		boolean letsgo = true;
+
+		while (letsgo) {
+			// System.out.println(stepstaken + " - " + dir + ": " + x + ", " + y
+			// + " s: " + stepsize);
+			iSpiral[x][y] = stepstaken + 1;
+
+			switch (dir) {
+			case 0:
+				if (stepsize == size) { // gleich ganz rechts angekommen,
+										// stepsize passt nicht zur arraybreite
+					for (int i = 0; i < stepsize; i++) {
+						iSpiral[x + i][y] = numelement++;
+					}
+					letsgo = false;
+					break;
+				}
+				for (int i = 0; i < stepsize; i++) {
+					iSpiral[x + i][y] = numelement++;
+				}
+				x += stepsize;
+				break;
+			case 1:
+				for (int i = 0; i < stepsize; i++) {
+					iSpiral[x][y + i] = numelement++;
+				}
+				y += stepsize;
+				break;
+			case 2:
+				for (int i = 0; i < stepsize; i++) {
+					iSpiral[x - i][y] = numelement++;
+				}
+				x -= stepsize;
+				break;
+			case 3:
+				for (int i = 0; i < stepsize; i++) {
+					iSpiral[x][y - i] = numelement++;
+				}
+				y -= stepsize;
+				break;
+			}
+			stepstaken++;
+			if (stepstaken % 2 == 0)
+				stepsize++;
+
+			dir = (dir + 1) % 4;
+
+		}
+
+		long sum = 0;
+		for (int i = 0; i < size; i++) {
+			if (size / 2 != i)
+				sum = sum + iSpiral[i][i] + iSpiral[i][size - (i + 1)];
+			else {
+				// sind genau in der mitte
+				sum = sum + iSpiral[i][i];
+			}
+		}
+		System.out.println("sum: " + sum);
+
+		boolean debug = false;
+		if (debug) {
+			System.out.println();
+			for (int i = 0; i < size; i++) {
+				for (int j = 0; j < size; j++) {
+					if (iSpiral[j][i] < 10)
+						System.out.print(" ");
+					System.out.print(iSpiral[j][i] + " ");
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
 	}
 }
