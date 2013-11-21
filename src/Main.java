@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem30();
+		problem31();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -1015,5 +1015,28 @@ public class Main {
 			return true;
 		else
 			return false;
+	}
+
+	private static void problem31() {
+		System.out.println("Problem 31");
+		// 200 100 50 20 10 5 2 1
+		int[] arrayOfAmounts = { 2, 0, 0, 0, 0, 0, 0, 0 };
+		int counter = 1;
+		while (arrayOfAmounts[7] != 200) {
+			getNextWayToFillUp(arrayOfAmounts);
+			counter++;
+		}
+
+	}
+
+	private static int[] getNextWayToFillUp(int[] arrayOfAmounts) {
+
+	}
+
+	private static boolean isFull(int[] arrayOfAmounts){
+		for(int i=0; i<arrayOfAmounts.length){
+			
+		}
+		
 	}
 }
