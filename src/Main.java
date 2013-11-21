@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem26();
+		problem27();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -69,6 +69,9 @@ public class Main {
 	}
 
 	private static boolean checkPrime(long l) {
+		if (l < 2)
+			return false;
+
 		for (long k = 2; k <= l / 2; k++) {
 			if (l % k == 0)
 				return false;
@@ -795,5 +798,91 @@ public class Main {
 		// mit modulo machen, 1000 / 1 bis 1000
 		// jeweilige teiler in vektor mit modulo weitermachen bis entweder 0
 		// oder zahl sich wiederholt
+		System.out
+				.println("Aufgabe 26: Längster recurring cycle in den Zahlen 1-1000");
+
+		int tmp;
+		int div;
+		int max = 0;
+		int value;
+		int pos = 0;
+
+		Vector<Integer> vNumbersTilHere;
+		for (int i = 1; i <= 1000; i++) {
+			vNumbersTilHere = new Vector<Integer>();
+
+			if (i < 11)
+				value = 10;
+			else if (i < 101)
+				value = 100;
+			else
+				value = 1000;
+
+			while (value != 0) {
+				div = value / i;
+				value = value % i;
+
+				if (i < 11)
+					value *= 10;
+				else if (i < 101)
+					value *= 100;
+				else
+					value *= 1000;
+
+				if (!vNumbersTilHere.contains(div)) {
+					vNumbersTilHere.add(div);
+				} else {
+					tmp = vNumbersTilHere.size() - vNumbersTilHere.indexOf(div);
+					System.out.println(i + ": found recurring cycle of length "
+							+ tmp);
+					if (tmp > max) {
+						max = tmp;
+						pos = i;
+					}
+					break;
+				}
+			}
+
+		}
+
+		System.out.println("Max recurring cycle: " + max + ", pos " + pos);
+
+	}
+
+	private static void problem27() {
+		System.out.println("Best formula for primes");
+		int maxprimeamount = 0;
+		int tmp;
+
+		List<Integer> myPrimeList = new Vector<Integer>();
+		for (int i = 3; i < 9999; i++) {
+			if (checkPrime(i))
+				myPrimeList.add(i);
+		}
+
+		for (int i = -9999; i < 10000; i++) {
+			for (int j = 1; j < myPrimeList.size(); j++) {
+				tmp = getHowManyPrimes(i, myPrimeList.get(j));
+				if (tmp > maxprimeamount) {
+					maxprimeamount = tmp;
+					System.out.println("new maximum " + maxprimeamount
+							+ " for " + i + ", " + myPrimeList.get(j)
+							+ ", product is " + (i * myPrimeList.get(j)));
+				}
+			}
+		}
+
+		System.out.println(getHowManyPrimes(-999, -5));
+	}
+
+	private static int getHowManyPrimes(int i, int j) {
+		int k = 0;
+		while (checkPrime(getTermResult(k, i, j)))
+			k++;
+		return k;
+	}
+
+	private static int getTermResult(int number, int a, int b) {
+		return (int) (Math.pow(number, 2) + a * number + b);
 	}
 }
