@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem24();
+		problem26();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -617,6 +617,7 @@ public class Main {
 
 		// List<String> sortedNames = mergeSortNames(names);
 		Collections.sort(names, new Comparator<String>() {
+			@Override
 			public int compare(String s1, String s2) {
 				return compareTwoNames(s1, s2);
 			}
@@ -771,5 +772,28 @@ public class Main {
 		int temp = a[i];
 		a[i] = a[j];
 		a[j] = temp;
+	}
+
+	private static void problem25() {
+		BigInteger biFib1 = BigInteger.ONE;
+		BigInteger biFib2 = BigInteger.ONE;
+		BigInteger biFibtmp;
+
+		int counter = 2;
+		while (biFib2.toString().length() < 1000) {
+			biFibtmp = biFib2;
+			biFib2 = biFib2.add(biFib1);
+			biFib1 = biFibtmp;
+			counter++;
+		}
+
+		System.out.println(counter);
+
+	}
+
+	private static void problem26() {
+		// mit modulo machen, 1000 / 1 bis 1000
+		// jeweilige teiler in vektor mit modulo weitermachen bis entweder 0
+		// oder zahl sich wiederholt
 	}
 }
