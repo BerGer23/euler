@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		long startTime = System.nanoTime();
-		problem31();
+		problem447();
 		long endTime = System.nanoTime();
 
 		long duration = endTime - startTime;
@@ -1023,20 +1023,34 @@ public class Main {
 		int[] arrayOfAmounts = { 2, 0, 0, 0, 0, 0, 0, 0 };
 		int counter = 1;
 		while (arrayOfAmounts[7] != 200) {
-			getNextWayToFillUp(arrayOfAmounts);
+			// getNextWayToFillUp(arrayOfAmounts);
 			counter++;
 		}
 
 	}
 
-	private static int[] getNextWayToFillUp(int[] arrayOfAmounts) {
-
+	private static void problem447() {
+		System.out.println("Problem 447");
+		System.out.println(isRetraction(10000000));
 	}
 
-	private static boolean isFull(int[] arrayOfAmounts){
-		for(int i=0; i<arrayOfAmounts.length){
-			
+	private static int isRetraction(long n) {
+
+		int counter = 0;
+		for (long a = 1; a < n - 1; a++) {
+			for (long b = 1; b < n - 1; b++) {
+				if (isRetTerm(n, a, b))
+					counter++;
+			}
 		}
-		
+
+		return counter;
+	}
+
+	private static boolean isRetTerm(long n, long a, long b) {
+		for (long x = 1; x < n - 1; x++)
+			if (!(a * (a * x + b % n) + b % n == (a * x + b % n) % n))
+				return false;
+		return true;
 	}
 }
